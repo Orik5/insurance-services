@@ -30,14 +30,17 @@
         </connector>
         <limit>10</limit>
         <sortOptions>
+            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
             <sortField>OpenInquiriesCount__c</sortField>
-            <sortOrder>Asc</sortOrder>
+            <sortOrder>Desc</sortOrder>
         </sortOptions>
         <sortOptions>
+            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
             <sortField>Name</sortField>
             <sortOrder>Asc</sortOrder>
         </sortOptions>
     </collectionProcessors>
+    <environments>Default</environments>
     <interviewLabel>Accounts with highest inquiries number {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Accounts with highest number of open inquiries</label>
     <processMetadataValues>
@@ -76,7 +79,7 @@
                 <numberValue>1.0</numberValue>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Account</object>
         <sortField>OpenInquiriesCount__c</sortField>
         <sortOrder>Asc</sortOrder>
@@ -140,6 +143,7 @@
                     <numberValue>10.0</numberValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -153,7 +157,7 @@
             <targetReference>Get_Records_1</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>Accounts</name>
         <dataType>SObject</dataType>
