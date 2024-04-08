@@ -10,13 +10,16 @@
         <connector>
             <targetReference>Zippopotam_Assigment</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>postalCode</name>
             <value>
                 <elementReference>$Record.PostalCode</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ZippopotamCallout.ZippopotamCallout</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>60.0</apiVersion>
     <assignments>
@@ -46,6 +49,7 @@
             </value>
         </assignmentItems>
     </assignments>
+    <environments>Default</environments>
     <interviewLabel>Record Triggered Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Lead Address Collout Flow</label>
     <processMetadataValues>
@@ -70,9 +74,37 @@
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <filterLogic>1</filterLogic>
+        <filterLogic>1 OR 2 OR 3 OR 4 OR 5</filterLogic>
         <filters>
-            <field>Address</field>
+            <field>City</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Country</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PostalCode</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Street</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>State</field>
             <operator>IsChanged</operator>
             <value>
                 <booleanValue>true</booleanValue>
@@ -80,6 +112,12 @@
         </filters>
         <object>Lead</object>
         <recordTriggerType>Update</recordTriggerType>
+        <scheduledPaths>
+            <connector>
+                <targetReference>ZippopotamCalloutAction</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
