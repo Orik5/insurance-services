@@ -1,0 +1,81 @@
+/**
+ * This class contains unit tests for validating the behavior of Apex classes
+ * and triggers.
+ *
+ * Unit tests are class methods that verify whether a particular piece
+ * of code is working properly. Unit test methods take no arguments,
+ * commit no data to the database, and are flagged with the testMethod
+ * keyword in the method definition.
+ *
+ * All test methods in an org are executed whenever Apex code is deployed
+ * to a production org to confirm correctness, ensure code
+ * coverage, and prevent regressions. All Apex classes are
+ * required to have at least 75% code coverage in order to be deployed
+ * to a production org. In addition, all triggers must have some code coverage.
+ * 
+ * The @isTest class annotation indicates this class only contains test
+ * methods. Classes defined with the @isTest annotation do not count against
+ * the org size limit for all Apex scripts.
+ *
+ * See the Apex Language Reference for more information about Testing and Code Coverage.
+ */
+@isTest
+private class OpenInquiryHandlerTest {
+
+    @TestSetup
+    static void createTestData(){
+        Account acc = new Account(
+            Name = 'Test Account'
+        );
+        insert acc;
+
+        List<Open_Inquiry__c> openInquiries = new List<Open_Inquiry__c>();
+        
+        for(Integer i = 0; i <10; i++) {
+            Open_Inquiry__c openInquiry = new Open_Inquiry__c();
+            openInquiry.Name = 'Test Open Inquiry' + i;
+            openInquiry.AccountId__c = acc.Id;
+            openInquiries.add(openInquiry);
+        }
+        insert openInquiries;
+    }
+
+    @isTest
+    static void calculateOpenInquiryHandlerTest() {
+        RetriveOpenInquiryHandlerHelper helper = new RetriveOpenInquiryHandlerHelper();
+        Assert.areEqual(10, helper.getAccount().OpenInquiriesCount__c ,'Account OpenInquiriesCount__c should be 10');
+    }
+
+    @isTest
+    static void calculateOpenInquiryHandlerUpdateTest() {
+        RetriveOpenInquiryHandlerHelper helper = new RetriveOpenInquiryHandlerHelper();
+        Account acc = helper.getAccount();
+        Open_Inquiry__c openInquiry =  helper.getOpenInquiry(acc.Id);
+        openInquiry.Name = 'Updated Open Inquiry';
+        update openInquiry;
+
+        Assert.areEqual('Updated Open Inquiry',openInquiry.Name ,'openInquiry Name should be updated');
+        Assert.areEqual(10, helper.getAccount().OpenInquiriesCount__c ,'Account OpenInquiriesCount__c should be 10');
+
+    }
+
+    private class RetriveOpenInquiryHandlerHelper {
+
+        private Account getAccount() {
+            return [
+                SELECT OpenInquiriesCount__c FROM Account 
+                WHERE OpenInquiriesCount__c != 0
+                LIMIT 1
+            ];
+        }
+
+        private Open_Inquiry__c getOpenInquiry(Id AccountId) {
+            return [
+                SELECT AccountId__c, Name 
+                FROM Open_Inquiry__c 
+                WHERE AccountId__c =: AccountId
+                LIMIT 1
+            ];
+        }
+    }
+}
