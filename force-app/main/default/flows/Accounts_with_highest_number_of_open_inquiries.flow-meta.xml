@@ -10,7 +10,7 @@
             <assignToReference>Accounts</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>Get_Records_1</elementReference>
+                <elementReference>Get_Accounts</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -26,7 +26,7 @@
         <collectionProcessorType>SortCollectionProcessor</collectionProcessorType>
         <collectionReference>Accounts</collectionReference>
         <connector>
-            <targetReference>Copy_1_of_Accounts_With_Hig8hest_Inquiries</targetReference>
+            <targetReference>Highest_Accout_Data_Table</targetReference>
         </connector>
         <limit>10</limit>
         <sortOptions>
@@ -63,8 +63,8 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
-        <name>Get_Records_1</name>
-        <label>Get Records 1</label>
+        <name>Get_Accounts</name>
+        <label>Get Accounts</label>
         <locationX>176</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -86,61 +86,25 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <screens>
-        <name>Copy_1_of_Accounts_With_Hig8hest_Inquiries</name>
-        <label>Copy 1 of Accounts With Highest Inquiries</label>
+        <name>Highest_Accout_Data_Table</name>
+        <label>Highest Accout Data Table</label>
         <locationX>176</locationX>
         <locationY>458</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
-            <name>Copy_1_of_Accounts_with_7highest_inquiries</name>
+            <name>HighestAccountTable</name>
             <dataTypeMappings>
                 <typeName>T</typeName>
                 <typeValue>Account</typeValue>
             </dataTypeMappings>
-            <extensionName>flowruntime:datatable</extensionName>
+            <extensionName>c:accountDataTable</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Accounts with highest inquiries</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>selectionMode</name>
-                <value>
-                    <stringValue>MULTI_SELECT</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>minRowSelection</name>
-                <value>
-                    <numberValue>0.0</numberValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columns</name>
-                <value>
-                    <stringValue>[{&quot;apiName&quot;:&quot;Name&quot;,&quot;guid&quot;:&quot;column-fe9e&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Account Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;OpenInquiriesCount__c&quot;,&quot;guid&quot;:&quot;column-8ac1&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Open Inquiries Count&quot;,&quot;type&quot;:&quot;number&quot;}]</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>tableData</name>
+                <name>accounts</name>
                 <value>
                     <elementReference>Accounts</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>selectedRows</name>
-                <value>
-                    <elementReference>Accounts</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>maxRowSelection</name>
-                <value>
-                    <numberValue>10.0</numberValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -154,10 +118,10 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Records_1</targetReference>
+            <targetReference>Get_Accounts</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>Accounts</name>
         <dataType>SObject</dataType>

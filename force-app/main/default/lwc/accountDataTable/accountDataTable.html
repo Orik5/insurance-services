@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Highest Accounts" icon-name="standard:contact" >
+        <div style="width: auto;">
+            <template if:true={accounts}>
+                <lightning-datatable data={accounts}
+                                     columns={columns}
+                                     key-field="id"
+                                     sorted-by={sortBy}
+                                     sorted-direction={sortDirection}
+                                     onsort={handleSortAccountData}
+                                     hide-checkbox-column="true">
+                </lightning-datatable>
+            </template>
+        </div>
+    </lightning-card>
+</template>
