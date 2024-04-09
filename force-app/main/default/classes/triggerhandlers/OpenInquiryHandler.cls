@@ -2,14 +2,38 @@ public with sharing class OpenInquiryHandler {
 
     public static void calculateOpenInquiryHandler( Set<Id> parentIds) {
 
-        List<Account> parentsToUpdate = AccountSelector.getAccounts(parentIds);
+        if (!parentIds.isEmpty()) {
+            List<AggregateResult> parentAggregates = [
+                SELECT AccountId__c, COUNT(Id) childCount
+                FROM Open_Inquiry__c
+                WHERE AccountId__c
+                IN :parentIds 
+                GROUP BY AccountId__c
+            ];
     
-        for (Account parent : parentsToUpdate) {
-            Integer childRecordCount = parent.Open_Inquiries__r.size();
+            Map<Id, Integer> parentCountMap = new Map<Id, Integer>();
+
+            for (AggregateResult aggregate : parentAggregates) {
+                parentCountMap.put(
+                    (Id)aggregate.get('AccountId__c'),
+                    (Integer)aggregate.get('childCount')
+                );
+            }
     
-            parent.OpenInquiriesCount__c = childRecordCount;
+            List<Account> parentsToUpdate = [
+                SELECT Id 
+                FROM Account 
+                WHERE Id 
+                IN :parentIds
+            ];
+    
+            for (Account parent : parentsToUpdate) {
+                parent.OpenInquiriesCount__c = parentCountMap.containsKey(parent.Id)
+                    ? parentCountMap.get(parent.Id)
+                    : 0;
+            }
+
+            update parentsToUpdate;
         }
-    
-        update parentsToUpdate;
     }
 }

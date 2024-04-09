@@ -5,6 +5,10 @@ trigger OpenInquiryTrigger on Open_Inquiry__c (after insert, after update, after
         for (Open_Inquiry__c child : Trigger.new) {
             parentIds.add(child.AccountId__c);
         }
+    } else if (Trigger.isDelete) {
+        for (Open_Inquiry__c child : Trigger.old) {
+            parentIds.add(child.AccountId__c);
+        }
     }
 
     OpenInquiryHandler.calculateOpenInquiryHandler(parentIds);
